@@ -1,24 +1,23 @@
 using System.Collections;
+using Assignment.ScriptableObjects;
 using Game;
 using Newtonsoft.Json.Linq;
-using Spine.Unity;
 using UnityEngine;
 using UnityEngine.Networking;
-using UnityEngine.Serialization;
+using Vector3 = System.Numerics.Vector3;
 
-namespace Assignment.GameAxie
+namespace Assignment.Battle
 {
-    public class GameAxie : AxieFigure
+    public class BattleAxieView : AxieFigure
     {
         #region FIELDS
 
-        [SerializeField] private AxieType axieType;
+        private Camera camera;
+        private bool isLookAtCamera = false;
 
         #endregion
 
         #region PROPETIES
-
-        public AxieType AxieType => axieType;
 
         #endregion
 
@@ -26,13 +25,32 @@ namespace Assignment.GameAxie
 
         private void Start()
         {
-            string axieId = AxieTypeDict.GetAxieId(axieType);
-            StartCoroutine(GetAxiesGenes(axieId));
+            this.camera = Camera.main;
+            this.isLookAtCamera = camera != null;
+        }
+
+        private void Update()
+        {
+            this.LookTowardCamera();
         }
 
         #endregion
 
         #region METHODS
+
+        private void LookTowardCamera()
+        {
+            if (!this.isLookAtCamera) return;
+            Quaternion quaternionLook = Quaternion.LookRotation(this.transform.position - this.camera.transform.position);
+            quaternionLook.y = 0;
+            quaternionLook.z = 0;
+            this.transform.rotation = quaternionLook;
+        }
+
+        public void ApplyViewConfig(AxieConfigInfo info)
+        {
+            this.StartCoroutine(GetAxiesGenes(info.axieId));
+        }
 
         private IEnumerator GetAxiesGenes(string axieId)
         {
