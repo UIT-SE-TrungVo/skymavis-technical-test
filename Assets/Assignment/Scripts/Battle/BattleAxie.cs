@@ -1,5 +1,8 @@
+using System;
+using Assignment.Battle.GuideMap;
 using Assignment.Battle.Model;
 using Assignment.ScriptableObjects;
+using DG.Tweening;
 using UnityEngine;
 
 namespace Assignment.Battle
@@ -9,24 +12,39 @@ namespace Assignment.Battle
         #region FIELDS
 
         [SerializeField] private AxieConfig config;
-        [SerializeField] private BattleAxieType axieType;
-        
+        [SerializeField] private BattleAxieSide axieSide;
+
         private BattleAxieInfo stats;
         private float currentHealth;
         private BattleAxieView axieView;
+
+        private BattleField battleField;
+        private BattleAxie target;
 
         #endregion
 
         #region PROPERTIES
 
-        public BattleAxieType AxieType => axieType;
+        public BattleAxieSide AxieSide => axieSide;
 
         public BattleAxieInfo Stats => stats;
 
-        public float CurrentHealth  
+        public float CurrentHealth
         {
             get => currentHealth;
             private set => currentHealth = value;
+        }
+
+        public BattleField BattleField
+        {
+            get => battleField;
+            set => battleField = value;
+        }
+
+        public BattleAxie Target
+        {
+            get => target;
+            private set => target = value;
         }
 
         #endregion
@@ -36,8 +54,18 @@ namespace Assignment.Battle
         private void Awake()
         {
             this.axieView = this.GetComponentInChildren<BattleAxieView>();
-            
+
             this.ApplyConfig();
+            this.CurrentHealth = this.Stats.InitHealth;
+        }
+
+        private void LateUpdate()
+        {
+            if (this.IsDead())
+            {
+                this.BattleField.RemoveAxie(this);
+                Destroy(this);
+            }
         }
 
         #endregion
@@ -51,18 +79,18 @@ namespace Assignment.Battle
 
         public bool IsDead()
         {
-            return this.stats.CurrentHealth <= 0;
+            return this.CurrentHealth <= 0;
         }
 
         private void ApplyConfig()
         {
             AxieConfigInfo info;
-            switch (this.AxieType)
+            switch (this.AxieSide)
             {
-                case BattleAxieType.Attacker:
+                case BattleAxieSide.Attacker:
                     info = config.attackerInfo;
                     break;
-                case BattleAxieType.Defender:
+                case BattleAxieSide.Defender:
                     info = config.defenderInfo;
                     break;
                 default:
@@ -75,6 +103,88 @@ namespace Assignment.Battle
                 this.axieView.ApplyViewConfig(info);
             }
         }
+
+        public System.Action GetNextAction()
+        {
+            if (this.IsDead()) return null;
+            BattleFieldGuideMgr guideMgr = this.BattleField.GuideMgr;
+            BattleFieldPositionMgr positionMgr = this.BattleField.PositionMgr;
+
+            Vector2Int? currentCoord = positionMgr.GetCoordOfAxie(this);
+            if (!currentCoord.HasValue) return null;
+
+            Vector2Int? targetCoord = this.Target == null || this.Target.IsDead()
+                ? null
+                : positionMgr.GetCoordOfAxie(this.Target);
+
+
+            float damage = this.CalculateDamageBetweenAxies();
+            if (!targetCoord.HasValue || Vector2Int.Distance(currentCoord.Value, targetCoord.Value) > 1)
+            {
+                Vector2Int? nearbyEnemyCoord = guideMgr.GetNearbyEnemyCoord(currentCoord.Value, this.AxieSide);
+                if (nearbyEnemyCoord.HasValue)
+                {
+                    this.Target = positionMgr.GetAxieAtCoord(nearbyEnemyCoord.Value);
+                    targetCoord = nearbyEnemyCoord;
+                    Debug.LogFormat("{0} Update target {1}", currentCoord, nearbyEnemyCoord);
+                }
+                else
+                {
+                    if (!this.CanMove()) return null;
+                    Vector2Int? nextMoveCoord = guideMgr.GetNextMoveCoord(currentCoord.Value);
+                    if (!nextMoveCoord.HasValue) return null;
+
+                    Debug.LogFormat("{0} Set movement {1}", currentCoord, nextMoveCoord);
+                    this.FaceDirection(currentCoord.Value, nextMoveCoord.Value);
+                    return () => this.GetMovement(nextMoveCoord.Value);
+                }
+            }
+
+            if (targetCoord.HasValue)
+            {
+                this.FaceDirection(currentCoord.Value, targetCoord.Value);
+            }
+
+            Debug.LogFormat("{0} Attack target {1}", currentCoord, this.Target.GetInstanceID());
+            this.axieView.DoAnimAttack();
+            return () => this.Target.GetDamage(damage);
+        }
+
+        private float CalculateDamageBetweenAxies()
+        {
+            int minRandom = this.config.battleConfig.minRandomGenNumber;
+            int maxRandom = this.config.battleConfig.maxRandomGenNumber;
+            int pointSender = RandomHelper.GetRandomInt(minRandom, maxRandom);
+            int pointReceiver = RandomHelper.GetRandomInt(minRandom, maxRandom);
+            int diffPoint = (3 + pointSender - pointReceiver) % 3;
+            return this.config.battleConfig.diffAndDamage[diffPoint];
+        }
+
+        public void GetDamage(float value)
+        {
+            Debug.LogFormat("Axie damaged {0} {1} {2}", this.GetInstanceID(), value, this.CurrentHealth);
+            this.CurrentHealth -= value;
+            this.axieView.DoAnimDamaged();
+        }
+
+        public void GetMovement(Vector2Int toCoord)
+        {
+            Debug.LogFormat("Axie move {0} {1}", this.GetInstanceID(), toCoord);
+            BattleFieldPositionMgr positionMgr = this.BattleField.PositionMgr;
+            positionMgr.PutAxieAtCoord(toCoord, this);
+
+            Vector3 posWorld = this.BattleField.GetWorldPosition(toCoord);
+            this.transform.DOMove(posWorld, 0.5f).SetEase(Ease.OutBack);
+
+            this.axieView.DoAnimMove();
+        }
+
+        public void FaceDirection(Vector2Int curCoord, Vector2Int toCoord)
+        {
+            bool isFlipX = curCoord.x < toCoord.x;
+            this.axieView.flipX = isFlipX;
+        }
+
         #endregion
     }
 }

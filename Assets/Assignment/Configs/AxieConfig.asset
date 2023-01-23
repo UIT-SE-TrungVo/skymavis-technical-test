@@ -20,3 +20,10 @@ MonoBehaviour:
     axieId: 2724598
     initHealth: 32
     moveSpeed: 0
+  battleConfig:
+    minRandomGenNumber: 0
+    maxRandomGenNumber: 2
+    diffAndDamage:
+    - 4
+    - 5
+    - 3

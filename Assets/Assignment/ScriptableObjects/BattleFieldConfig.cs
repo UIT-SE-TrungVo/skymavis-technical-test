@@ -11,6 +11,8 @@ namespace Assignment.ScriptableObjects
         public Vector2Int mapSize;
         public List<BattleGroup> attackAxiePoints;
         public List<BattleGroup> defendAxiePoints;
+
+        public float secondPerTurn;
     }
 
     [Serializable]

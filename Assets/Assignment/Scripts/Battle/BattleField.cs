@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using Assignment.Battle.GuideMap;
+using Assignment.Battle.Model;
 using Assignment.ScriptableObjects;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
@@ -17,7 +19,11 @@ namespace Assignment.Battle
         [SerializeField] private GameObject prefabAttackAxie;
         [SerializeField] private GameObject prefabDefendAxie;
 
-        private readonly Dictionary<Vector2Int, BattleAxie> coord2Axie = new Dictionary<Vector2Int, BattleAxie>();
+        private BattleFieldPositionMgr positionMgr;
+        private BattleFieldGuideMgr guideMgr;
+        private BattleFieldTurnMgr turnMgr;
+        private BattleFieldActionMgr actionMgr;
+
         private Vector2 gridSize;
 
         #endregion
@@ -26,6 +32,14 @@ namespace Assignment.Battle
 
         public Vector2 GridSize => gridSize;
 
+        public BattleFieldPositionMgr PositionMgr => positionMgr;
+
+        public BattleFieldGuideMgr GuideMgr => guideMgr;
+
+        public BattleFieldTurnMgr TurnMgr => turnMgr;
+
+        public BattleFieldActionMgr ActionMgr => actionMgr;
+
         #endregion
 
         #region UNITY EVENTS
@@ -33,7 +47,22 @@ namespace Assignment.Battle
         private void Awake()
         {
             this.ApplyUIConfig(this.battleFieldUIConfig);
+
+            this.positionMgr = new BattleFieldPositionMgr(this.battleFieldConfig.mapSize);
             this.ApplySpawnConfig(this.battleFieldConfig, this.prefabAttackAxie, this.prefabDefendAxie);
+
+            this.guideMgr = new BattleFieldGuideMgr(this.positionMgr);
+            this.turnMgr = new BattleFieldTurnMgr(this.battleFieldConfig.secondPerTurn);
+            this.actionMgr = new BattleFieldActionMgr(this.positionMgr);
+        }
+
+        private void FixedUpdate()
+        {
+            bool canExecuteATurn = this.turnMgr.GetUpdate(Time.fixedDeltaTime);
+            if (canExecuteATurn)
+            {
+                this.ExecuteATurn();
+            }
         }
 
         #endregion
@@ -85,8 +114,14 @@ namespace Assignment.Battle
                 return;
             }
 
-            this.coord2Axie.Add(coordinate, battleAxie);
+            battleAxie.BattleField = this;
+            this.positionMgr.PutAxieAtCoord(coordinate, battleAxie);
             goAxie.transform.position = this.GetWorldPosition(coordinate);
+        }
+
+        public void RemoveAxie(BattleAxie axie)
+        {
+            this.positionMgr.RemoveAxie(axie);
         }
 
         public Vector3 GetWorldPosition(Vector2Int coordinate)
@@ -96,6 +131,13 @@ namespace Assignment.Battle
             float offsetX = coordinate.x - centerPoint.x;
             float offsetY = coordinate.y - centerPoint.y;
             return new Vector3(offsetX * this.GridSize.x, 0, offsetY * this.GridSize.y);
+        }
+
+        private void ExecuteATurn()
+        {
+            this.guideMgr.UpdateMap();
+            List<System.Action> listAction = this.actionMgr.GetListNextActions();
+            listAction.ForEach(action => action?.Invoke());
         }
 
         #endregion

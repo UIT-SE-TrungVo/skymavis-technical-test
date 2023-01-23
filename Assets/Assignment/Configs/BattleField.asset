@@ -25,3 +25,4 @@ MonoBehaviour:
   defendAxiePoints:
   - topLeft: {x: 3, y: 3}
     size: {x: 4, y: 4}
+  secondPerTurn: 1

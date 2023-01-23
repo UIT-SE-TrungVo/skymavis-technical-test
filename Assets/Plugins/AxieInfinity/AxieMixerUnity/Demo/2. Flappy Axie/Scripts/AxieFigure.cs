@@ -9,6 +9,8 @@ namespace Game
     {
         private SkeletonAnimation skeletonAnimation;
 
+        public SkeletonAnimation SkeletonAnimation => skeletonAnimation;
+
         [SerializeField] private bool _flipX = false;
         public bool flipX
         {

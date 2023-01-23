@@ -1,10 +1,12 @@
 using System.Collections;
+using System.Collections.Generic;
 using Assignment.ScriptableObjects;
+using DG.Tweening;
 using Game;
 using Newtonsoft.Json.Linq;
+using Spine;
 using UnityEngine;
 using UnityEngine.Networking;
-using Vector3 = System.Numerics.Vector3;
 
 namespace Assignment.Battle
 {
@@ -12,7 +14,30 @@ namespace Assignment.Battle
     {
         #region FIELDS
 
-        private Camera camera;
+        private readonly List<string> animAttack = new List<string>()
+        {
+            "attack/melee/horn-gore",
+            "attack/melee/mouth-bite",
+            "attack/melee/multi-attack",
+            "attack/melee/normal-attack",
+            "attack/melee/shrimp",
+            "attack/melee/tail-multi-slap",
+            "attack/melee/tail-roll",
+            "attack/melee/tail-smash",
+            "attack/melee/tail-thrash"
+        };
+
+        private readonly List<string> animHurt = new List<string>()
+        {
+            "defense/hit-by-normal",
+            "defense/hit-by-normal-crit",
+            "defense/hit-by-normal-dramatic",
+            "defense/hit-by-ranged-attack"
+        };
+
+        private static Dictionary<string, string> axieId2GenreString = new Dictionary<string, string>();
+
+        private new Camera camera;
         private bool isLookAtCamera = false;
 
         #endregion
@@ -41,10 +66,7 @@ namespace Assignment.Battle
         private void LookTowardCamera()
         {
             if (!this.isLookAtCamera) return;
-            Quaternion quaternionLook = Quaternion.LookRotation(this.transform.position - this.camera.transform.position);
-            quaternionLook.y = 0;
-            quaternionLook.z = 0;
-            this.transform.rotation = quaternionLook;
+            this.transform.rotation = Quaternion.Euler(this.camera.transform.eulerAngles.x, 0, 0);
         }
 
         public void ApplyViewConfig(AxieConfigInfo info)
@@ -74,6 +96,41 @@ namespace Assignment.Battle
                     this.SetGenes(axieId, genesStr);
                 }
             }
+        }
+
+        public new void SetGenes(string axieId, string genreStr)
+        {
+            base.SetGenes(axieId, genreStr);
+
+            Vector3 originScale = this.transform.localScale;
+            this.transform.localScale = Vector3.zero;
+            this.transform.DOScale(originScale, 0.5f)
+                .SetEase(Ease.OutBack);
+
+            this.transform.DOLocalJump(Vector3.zero, 16, 1, 0.5f);
+
+            this.SkeletonAnimation.timeScale = 1f;
+            this.SkeletonAnimation.AnimationState.SetAnimation(0, "activity/appear", false);
+        }
+
+        public void DoAnimAttack()
+        {
+            string anim = RandomHelper.GetRandomElementFromList(this.animAttack);
+            this.SkeletonAnimation.timeScale = 1f;
+            this.SkeletonAnimation.AnimationState.SetAnimation(0, anim, false);
+        }
+
+        public void DoAnimDamaged()
+        {
+            string anim = RandomHelper.GetRandomElementFromList(this.animHurt);
+            this.SkeletonAnimation.timeScale = 1f;
+            this.SkeletonAnimation.AnimationState.SetAnimation(0, anim, false);
+        }
+
+        public void DoAnimMove()
+        {
+            this.SkeletonAnimation.timeScale = 1f;
+            this.SkeletonAnimation.AnimationState.SetAnimation(0, "action/move-forward", false);
         }
 
         #endregion

@@ -9,6 +9,7 @@ namespace Assignment.ScriptableObjects
     {
         public AxieConfigInfo attackerInfo;
         public AxieConfigInfo defenderInfo;
+        public AxieBattleConfig battleConfig;
     }
 
     [Serializable]
@@ -17,5 +18,13 @@ namespace Assignment.ScriptableObjects
         public string axieId;
         public float initHealth;
         public float moveSpeed;
+    }
+
+    [Serializable]
+    public struct AxieBattleConfig
+    {
+        public int minRandomGenNumber;
+        public int maxRandomGenNumber;
+        public List<float> diffAndDamage;
     }
 }

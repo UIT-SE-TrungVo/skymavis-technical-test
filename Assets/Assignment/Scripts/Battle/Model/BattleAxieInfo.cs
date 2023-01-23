@@ -9,8 +9,6 @@ namespace Assignment.Battle.Model
         private readonly float initHealth;
         private readonly float moveSpeed;
 
-        private float currentHealth;
-
         #endregion
 
         #region PROPERTIES
@@ -18,12 +16,6 @@ namespace Assignment.Battle.Model
         public float InitHealth => initHealth;
 
         public float MoveSpeed => moveSpeed;
-
-        public float CurrentHealth
-        {
-            get => currentHealth;
-            set => currentHealth = value;
-        }
 
         #endregion
 
