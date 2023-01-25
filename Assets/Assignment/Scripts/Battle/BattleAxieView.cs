@@ -101,8 +101,6 @@ namespace Assignment.Battle
             this.transform.localScale = Vector3.zero;
             this.transform.DOScale(originScale, 0.5f)
                 .SetEase(Ease.OutBack);
-
-            this.transform.DOLocalJump(Vector3.zero, 16, 1, 0.5f);
             this.DoAnimIdle();
         }
 

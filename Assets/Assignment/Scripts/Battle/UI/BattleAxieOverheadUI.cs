@@ -11,10 +11,14 @@ namespace Assignment.Battle.UI
         #region FIELDS
 
         private BattleAxie owner;
-        [SerializeField] private RectTransform rectCenter;
         [SerializeField] private Slider sliderHealth;
         [SerializeField] private float sliderLerpSpeed;
+
+        private float defaultCamSize;
         private bool canUpdate;
+        private RectTransform rectSliderHealth;
+        private Image imgSliderHealthFill;
+        private Camera curCamera;
 
         #endregion
 
@@ -26,8 +30,16 @@ namespace Assignment.Battle.UI
 
         private void Start()
         {
+            this.curCamera = Camera.main;
             this.owner = this.GetComponentInParent<BattleAxie>();
-            this.canUpdate = this.owner != null && this.sliderHealth != null && this.rectCenter != null;
+            this.canUpdate = this.owner != null && this.sliderHealth != null;
+
+            this.rectSliderHealth = this.sliderHealth.GetComponent<RectTransform>();
+            this.imgSliderHealthFill = this.sliderHealth.fillRect.GetComponent<Image>();
+            if (this.curCamera != null)
+            {
+                this.defaultCamSize = this.curCamera.orthographicSize;
+            }
         }
 
         private void Update()
@@ -50,14 +62,41 @@ namespace Assignment.Battle.UI
             float targetRatio = currentHealth / maxHealth;
             float limitLerp = this.sliderLerpSpeed * Time.deltaTime;
             this.sliderHealth.value = Mathf.Lerp(sliderHealth.value, targetRatio, limitLerp);
+
+            Color healthColor = this.GetHealthColor(1.0f, this.sliderHealth.value);
+            this.imgSliderHealthFill.color = healthColor;
         }
 
         private void KeepOnOwnerHead()
         {
             Vector3 axiePosition = owner.transform.position;
-            Vector3 position = Camera.main.WorldToScreenPoint(axiePosition);
-            this.rectCenter.transform.position = position;
-            this.rectCenter.localScale = owner.transform.localScale;
+            Vector3 position = this.curCamera.WorldToScreenPoint(axiePosition);
+            this.rectSliderHealth.position = position + this.GetAddPositionAdjustedByCamera();
+            this.rectSliderHealth.localScale = Vector3.one * this.GetScaleAdjustedByCamera();
+        }
+
+        private Vector3 GetAddPositionAdjustedByCamera()
+        {
+            float camSize = this.curCamera.orthographicSize;
+            float addPerSize = 5.0f;
+            float heightAtDefaultCamSize = 48f;
+            return Vector3.up * (heightAtDefaultCamSize + addPerSize * (this.defaultCamSize - camSize));
+        }
+
+        private float GetScaleAdjustedByCamera()
+        {
+            float camSize = this.curCamera.orthographicSize;
+            float addPerSize = 0.25f;
+            return 1.0f + addPerSize * (this.defaultCamSize - camSize);
+        }
+
+        private Color GetHealthColor(float maxValue, float currentValue)
+        {
+            const float maxHue = 0.27f;
+            const float minHue = 0.0f;
+
+            float hue = minHue + (maxHue - minHue) * (currentValue / maxValue);
+            return Color.HSVToRGB(hue, 1.0f, 0.8f);
         }
 
         #endregion
