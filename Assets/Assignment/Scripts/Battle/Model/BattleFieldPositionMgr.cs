@@ -41,7 +41,7 @@ namespace Assignment.Battle.Model
 
         public bool RemoveAxie(BattleAxie axie)
         {
-            if (!axie2Coord.ContainsKey(axie)) return false;
+            // if (!axie2Coord.ContainsKey(axie)) return false;
             coord2Axie.Remove(axie2Coord[axie]);
             axie2Coord.Remove(axie);
             return true;

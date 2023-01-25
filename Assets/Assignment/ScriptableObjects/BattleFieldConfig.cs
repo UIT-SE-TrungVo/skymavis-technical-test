@@ -13,6 +13,8 @@ namespace Assignment.ScriptableObjects
         public List<BattleGroup> defendAxiePoints;
 
         public float secondPerTurn;
+
+        public BattleSpeedScale battleSpeedScale;
     }
 
     [Serializable]
@@ -20,5 +22,12 @@ namespace Assignment.ScriptableObjects
     {
         public Vector2Int topLeft;
         public Vector2Int size;
+    }
+
+    [Serializable]
+    public struct BattleSpeedScale
+    {
+        public List<float> listScale;
+        public int speedIndexAtStart;
     }
 }

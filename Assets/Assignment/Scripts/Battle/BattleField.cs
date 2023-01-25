@@ -18,6 +18,7 @@ namespace Assignment.Battle
         [SerializeField] private BattleFieldUIConfig battleFieldUIConfig;
         [SerializeField] private GameObject prefabAttackAxie;
         [SerializeField] private GameObject prefabDefendAxie;
+        [SerializeField] private GameObject nodeGroupAxie;
 
         private BattleFieldPositionMgr positionMgr;
         private BattleFieldGuideMgr guideMgr;
@@ -106,7 +107,7 @@ namespace Assignment.Battle
 
         private void SpawnAxie(Vector2Int coordinate, GameObject axiePrefab)
         {
-            GameObject goAxie = Instantiate(axiePrefab);
+            GameObject goAxie = Instantiate(axiePrefab, this.nodeGroupAxie.transform);
             BattleAxie battleAxie = goAxie.GetComponent<BattleAxie>();
             if (battleAxie == null)
             {

@@ -26,3 +26,10 @@ MonoBehaviour:
   - topLeft: {x: 3, y: 3}
     size: {x: 4, y: 4}
   secondPerTurn: 1
+  battleSpeedScale:
+    listScale:
+    - 0.5
+    - 1
+    - 2
+    - 4
+    speedIndexAtStart: 1

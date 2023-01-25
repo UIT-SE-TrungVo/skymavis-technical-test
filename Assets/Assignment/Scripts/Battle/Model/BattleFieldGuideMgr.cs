@@ -94,13 +94,6 @@ namespace Assignment.Battle.GuideMap
 
                     listPoint.Add(coord);
                 }
-
-                Debug.LogFormat("Check coord {0} {1} {2} {3}",
-                    currentCoord,
-                    coord,
-                    this.coord2DistanceToEnemy.ContainsKey(coord) ? this.coord2DistanceToEnemy[coord] : -999,
-                    this.positionMgr.IsCoordInMap(coord)
-                );
             }
 
             return listPoint.Count > 0 ? RandomHelper.GetRandomElementFromList(listPoint) : (Vector2Int?)null;
@@ -113,7 +106,6 @@ namespace Assignment.Battle.GuideMap
             foreach (Vector2Int direction in Directions)
             {
                 Vector2Int coord = currentCoord + direction;
-                Debug.LogFormat("Check {0} {1}", coord, this.coord2DistanceToEnemy.ContainsKey(coord));
                 if (!this.positionMgr.IsCoordInMap(coord)) continue;
                 int value = this.coord2DistanceToEnemy.ContainsKey(coord)
                     ? this.coord2DistanceToEnemy[coord]

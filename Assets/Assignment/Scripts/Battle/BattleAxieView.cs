@@ -20,19 +20,14 @@ namespace Assignment.Battle
             "attack/melee/mouth-bite",
             "attack/melee/multi-attack",
             "attack/melee/normal-attack",
-            "attack/melee/shrimp",
             "attack/melee/tail-multi-slap",
-            "attack/melee/tail-roll",
             "attack/melee/tail-smash",
             "attack/melee/tail-thrash"
         };
 
         private readonly List<string> animHurt = new List<string>()
         {
-            "defense/hit-by-normal",
-            "defense/hit-by-normal-crit",
-            "defense/hit-by-normal-dramatic",
-            "defense/hit-by-ranged-attack"
+            "defense/hit-by-normal"
         };
 
         private static Dictionary<string, string> axieId2GenreString = new Dictionary<string, string>();
@@ -108,9 +103,7 @@ namespace Assignment.Battle
                 .SetEase(Ease.OutBack);
 
             this.transform.DOLocalJump(Vector3.zero, 16, 1, 0.5f);
-
-            this.SkeletonAnimation.timeScale = 1f;
-            this.SkeletonAnimation.AnimationState.SetAnimation(0, "activity/appear", false);
+            this.DoAnimIdle();
         }
 
         public void DoAnimAttack()
@@ -131,6 +124,22 @@ namespace Assignment.Battle
         {
             this.SkeletonAnimation.timeScale = 1f;
             this.SkeletonAnimation.AnimationState.SetAnimation(0, "action/move-forward", false);
+        }
+
+        public void DoAnimDie(System.Action callback = null)
+        {
+            this.SkeletonAnimation.timeScale = 1f;
+            this.SkeletonAnimation.AnimationState.SetAnimation(0, "defense/hit-by-normal-dramatic", false);
+            if (callback != null)
+            {
+                this.SkeletonAnimation.AnimationState.End += (trackEntry) => callback();
+            }
+        }
+
+        public void DoAnimIdle()
+        {
+            this.SkeletonAnimation.timeScale = 1f;
+            this.SkeletonAnimation.AnimationState.AddAnimation(0, "action/idle/normal", true, 0);
         }
 
         #endregion

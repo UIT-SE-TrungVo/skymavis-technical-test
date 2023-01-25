@@ -64,7 +64,12 @@ namespace Assignment.Battle
             if (this.IsDead())
             {
                 this.BattleField.RemoveAxie(this);
-                Destroy(this);
+                Destroy(this.gameObject);
+            }
+
+            if (this.battleField.PositionMgr.GetCoordOfAxie(this) == null)
+            {
+                this.transform.position += new Vector3(1, 0, 0);
             }
         }
 
@@ -126,7 +131,6 @@ namespace Assignment.Battle
                 {
                     this.Target = positionMgr.GetAxieAtCoord(nearbyEnemyCoord.Value);
                     targetCoord = nearbyEnemyCoord;
-                    Debug.LogFormat("{0} Update target {1}", currentCoord, nearbyEnemyCoord);
                 }
                 else
                 {
@@ -134,7 +138,6 @@ namespace Assignment.Battle
                     Vector2Int? nextMoveCoord = guideMgr.GetNextMoveCoord(currentCoord.Value);
                     if (!nextMoveCoord.HasValue) return null;
 
-                    Debug.LogFormat("{0} Set movement {1}", currentCoord, nextMoveCoord);
                     this.FaceDirection(currentCoord.Value, nextMoveCoord.Value);
                     return () => this.GetMovement(nextMoveCoord.Value);
                 }
@@ -145,7 +148,6 @@ namespace Assignment.Battle
                 this.FaceDirection(currentCoord.Value, targetCoord.Value);
             }
 
-            Debug.LogFormat("{0} Attack target {1}", currentCoord, this.Target.GetInstanceID());
             this.axieView.DoAnimAttack();
             return () => this.Target.GetDamage(damage);
         }
