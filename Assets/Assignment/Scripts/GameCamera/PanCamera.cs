@@ -1,7 +1,6 @@
-using System;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 namespace Assignment.GameCamera
 {
@@ -30,6 +29,26 @@ namespace Assignment.GameCamera
 
         private void Update()
         {
+            this.TrySnapCamera();
+            this.TryPanCamera();
+        }
+
+        #endregion
+
+        #region METHODS
+
+        private void TrySnapCamera()
+        {
+            if (Keyboard.current.spaceKey.IsPressed())
+            {
+                Vector3 curCamPos = this.gameCamera.transform.position;
+                this.gameCamera.transform.DOMove(new Vector3(0, curCamPos.y, 0), 0.05f)
+                    .SetEase(Ease.InOutSine);
+            }
+        }
+
+        private void TryPanCamera()
+        {
             if (this.isCameraNull) return;
             Vector2 mousePos = Mouse.current.position.ReadValue();
 
@@ -42,11 +61,7 @@ namespace Assignment.GameCamera
             this.gameCamera.transform.Translate(vetMoveCamera, Space.World);
         }
 
-        #endregion
-
-        #region METHODS
-
-        float CalcCameraMove(float mousePos, float sideLength)
+        private float CalcCameraMove(float mousePos, float sideLength)
         {
             //get the distance from nearest boundary to pos
             //if mouse in the trigger zone -> (nearer to boundary means higher value)

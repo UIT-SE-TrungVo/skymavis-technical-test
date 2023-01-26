@@ -29,9 +29,8 @@ namespace Assignment.Battle
         private readonly List<string> animHurt = new List<string>()
         {
             "defense/hit-by-normal"
+            , "defense/hit-by-ranged-attack"
         };
-
-        private static Dictionary<string, string> axieId2GenreString = new Dictionary<string, string>();
 
         private new Camera camera;
         private bool isLookAtCamera = false;
@@ -120,7 +119,7 @@ namespace Assignment.Battle
         {
             string anim = RandomHelper.GetRandomElementFromList(this.animHurt);
             this.SkeletonAnimation.timeScale = 1f;
-            this.SkeletonAnimation.AnimationState.SetAnimation(0, anim, false);
+            this.SkeletonAnimation.AnimationState.SetAnimation(1, anim, false);
         }
 
         public void DoAnimMove()
@@ -129,14 +128,10 @@ namespace Assignment.Battle
             this.SkeletonAnimation.AnimationState.SetAnimation(0, "action/move-forward", false);
         }
 
-        public void DoAnimDie(System.Action callback = null)
+        public void DoAnimDie()
         {
             this.SkeletonAnimation.timeScale = 1f;
-            this.SkeletonAnimation.AnimationState.SetAnimation(0, "defense/hit-by-normal-dramatic", false);
-            if (callback != null)
-            {
-                this.SkeletonAnimation.AnimationState.End += (trackEntry) => callback();
-            }
+            this.SkeletonAnimation.AnimationState.SetAnimation(0, "defense/hit-by-normal-crit", true);
         }
 
         public void DoAnimIdle()

@@ -79,7 +79,7 @@ namespace Assignment.Battle.UI
         {
             float camSize = this.curCamera.orthographicSize;
             float addPerSize = 6.0f;
-            float heightAtDefaultCamSize = 40f;
+            float heightAtDefaultCamSize = 24.0f;
             return Vector3.up * (heightAtDefaultCamSize + addPerSize * (this.defaultCamSize - camSize));
         }
 

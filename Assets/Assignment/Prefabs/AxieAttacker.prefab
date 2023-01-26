@@ -216,6 +216,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: AxieOverheadInfo
       objectReference: {fileID: 0}
+    - target: {fileID: 3089427063013997199, guid: a72c0f2d26eb0c44ab6992600531a156,
+        type: 3}
+      propertyPath: m_Transition
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4522237142064910588, guid: a72c0f2d26eb0c44ab6992600531a156,
         type: 3}
       propertyPath: m_AnchorMax.x

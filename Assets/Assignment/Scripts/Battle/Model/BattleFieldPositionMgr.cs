@@ -31,8 +31,8 @@ namespace Assignment.Battle.Model
             if (!this.IsCoordInMap(coord)) return false;
             if (coord2Axie.ContainsKey(coord) && coord2Axie[coord] != axie) return false;
 
-            coord2Axie.Remove(coord);
-            axie2Coord.Remove(axie);
+            this.RemoveAxie(axie);
+            this.RemoveAtCoord(coord);
 
             coord2Axie.Add(coord, axie);
             axie2Coord.Add(axie, coord);
@@ -41,7 +41,7 @@ namespace Assignment.Battle.Model
 
         public bool RemoveAxie(BattleAxie axie)
         {
-            // if (!axie2Coord.ContainsKey(axie)) return false;
+            if (!axie2Coord.ContainsKey(axie)) return false;
             coord2Axie.Remove(axie2Coord[axie]);
             axie2Coord.Remove(axie);
             return true;

@@ -1,6 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Numerics;
+using System.Linq;
 using Assignment.Battle.GuideMap;
 using Assignment.Battle.Model;
 using Assignment.ScriptableObjects;
@@ -139,6 +138,11 @@ namespace Assignment.Battle
             this.guideMgr.UpdateMap();
             List<System.Action> listAction = this.actionMgr.GetListNextActions();
             listAction.ForEach(action => action?.Invoke());
+        }
+
+        public List<BattleAxie> GetAllAxies()
+        {
+            return this.positionMgr.Coord2Axie.Values.ToList();
         }
 
         #endregion

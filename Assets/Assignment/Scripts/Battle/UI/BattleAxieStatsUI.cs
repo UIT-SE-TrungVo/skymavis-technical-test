@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 namespace Assignment.Battle.UI
 {
-    public class BatteAxieStatsUI : MonoBehaviour
+    public class BattleAxieStatsUI : MonoBehaviour
     {
         #region FIELDS
 

@@ -1,7 +1,10 @@
 using System;
 using Assignment.Battle.GuideMap;
 using Assignment.Battle.Model;
+using Assignment.Battle.UI;
 using Assignment.ScriptableObjects;
+using Assignment.Sound;
+using Assignment.Sound.Enum;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -81,7 +84,8 @@ namespace Assignment.Battle
             if (this.IsDead())
             {
                 this.BattleField.RemoveAxie(this);
-                Destroy(this.gameObject);
+                this.axieView.DoAnimDie();
+                Destroy(this.gameObject, 5.0f);
             }
         }
 
@@ -160,6 +164,7 @@ namespace Assignment.Battle
             }
 
             this.axieView.DoAnimAttack();
+            SoundPlayer.AssignPlaySound(SoundCategory.Hit);
             float damage = this.CalculateDamageBetweenAxies(this.Target);
             this.LatestDamage = damage;
             return () => this.Target.GetDamage(damage);
@@ -178,13 +183,17 @@ namespace Assignment.Battle
             Debug.LogFormat("Axie damaged {0} {1} {2}", this.GetInstanceID(), value, this.CurrentHealth);
             this.CurrentHealth -= value;
             this.axieView.DoAnimDamaged();
+
+            BattleEffect.DisplayDamagedEffect(this.gameObject, value);
         }
 
         public void GetMovement(Vector2Int toCoord)
         {
             Debug.LogFormat("Axie move {0} {1}", this.GetInstanceID(), toCoord);
             BattleFieldPositionMgr positionMgr = this.BattleField.PositionMgr;
-            positionMgr.PutAxieAtCoord(toCoord, this);
+
+            bool success = positionMgr.PutAxieAtCoord(toCoord, this);
+            if (!success) return;
 
             Vector3 posWorld = this.BattleField.GetWorldPosition(toCoord);
             this.transform.DOMove(posWorld, 0.5f).SetEase(Ease.OutBack);

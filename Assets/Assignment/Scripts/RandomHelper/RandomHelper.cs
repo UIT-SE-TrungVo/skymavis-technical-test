@@ -9,13 +9,18 @@ namespace Assignment
 
         public static T GetRandomElementFromList<T>(List<T> list)
         {
-            int newIndex = Random.Next(0, list.Count - 1);
+            int newIndex = Random.Next(0, list.Count);
             return list[newIndex];
         }
 
         public static int GetRandomInt(int min, int max)
         {
             return Random.Next(min, max);
+        }
+
+        public static float GetRandomFloat(float min, float max)
+        {
+            return (float)(Random.NextDouble() * (max - min) + min);
         }
     }
 }
