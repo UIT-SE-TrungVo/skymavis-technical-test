@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Assignment.ScriptableObjects;
@@ -96,7 +97,11 @@ namespace Assignment.Battle
         public new void SetGenes(string axieId, string genreStr)
         {
             base.SetGenes(axieId, genreStr);
+            this.DoAnimAppear();
+        }
 
+        public void DoAnimAppear()
+        {
             Vector3 originScale = this.transform.localScale;
             this.transform.localScale = Vector3.zero;
             this.transform.DOScale(originScale, 0.5f)

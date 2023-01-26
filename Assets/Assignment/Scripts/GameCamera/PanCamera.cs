@@ -37,7 +37,7 @@ namespace Assignment.GameCamera
             float yMoveCamera = this.CalcCameraMove(mousePos.y, Screen.height);
 
             Vector3 vetMoveCamera = new Vector3(xMoveCamera, 0, yMoveCamera).normalized;
-            vetMoveCamera *= (Time.deltaTime * this.panSpeed);
+            vetMoveCamera *= (Time.unscaledDeltaTime * this.panSpeed);
 
             this.gameCamera.transform.Translate(vetMoveCamera, Space.World);
         }

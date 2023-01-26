@@ -4,6 +4,7 @@ using Assignment.Battle.Model;
 using Assignment.ScriptableObjects;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Assignment.Battle
 {
@@ -14,10 +15,12 @@ namespace Assignment.Battle
         [SerializeField] private AxieConfig config;
         [SerializeField] private BattleAxieSide axieSide;
 
-        private BattleAxieInfo stats;
         private float currentHealth;
-        private BattleAxieView axieView;
+        private int luckyBattleNumber;
+        private float latestDamage;
 
+        private BattleAxieInfo stats;
+        private BattleAxieView axieView;
         private BattleField battleField;
         private BattleAxie target;
 
@@ -47,6 +50,18 @@ namespace Assignment.Battle
             private set => target = value;
         }
 
+        public int LuckyBattleNumber
+        {
+            get => luckyBattleNumber;
+            private set => luckyBattleNumber = value;
+        }
+
+        public float LatestDamage
+        {
+            get => latestDamage;
+            private set => latestDamage = value;
+        }
+
         #endregion
 
         #region UNITY EVENTS
@@ -57,6 +72,8 @@ namespace Assignment.Battle
 
             this.ApplyConfig();
             this.CurrentHealth = this.Stats.InitHealth;
+
+            this.LuckyBattleNumber = this.GenerateLuckyBattleNumber();
         }
 
         private void LateUpdate()
@@ -65,11 +82,6 @@ namespace Assignment.Battle
             {
                 this.BattleField.RemoveAxie(this);
                 Destroy(this.gameObject);
-            }
-
-            if (this.battleField.PositionMgr.GetCoordOfAxie(this) == null)
-            {
-                this.transform.position += new Vector3(1, 0, 0);
             }
         }
 
@@ -123,7 +135,6 @@ namespace Assignment.Battle
                 : positionMgr.GetCoordOfAxie(this.Target);
 
 
-            float damage = this.CalculateDamageBetweenAxies();
             if (!targetCoord.HasValue || Vector2Int.Distance(currentCoord.Value, targetCoord.Value) > 1)
             {
                 Vector2Int? nearbyEnemyCoord = guideMgr.GetNearbyEnemyCoord(currentCoord.Value, this.AxieSide);
@@ -149,15 +160,15 @@ namespace Assignment.Battle
             }
 
             this.axieView.DoAnimAttack();
+            float damage = this.CalculateDamageBetweenAxies(this.Target);
+            this.LatestDamage = damage;
             return () => this.Target.GetDamage(damage);
         }
 
-        private float CalculateDamageBetweenAxies()
+        private float CalculateDamageBetweenAxies(BattleAxie receiver)
         {
-            int minRandom = this.config.battleConfig.minRandomGenNumber;
-            int maxRandom = this.config.battleConfig.maxRandomGenNumber;
-            int pointSender = RandomHelper.GetRandomInt(minRandom, maxRandom);
-            int pointReceiver = RandomHelper.GetRandomInt(minRandom, maxRandom);
+            int pointSender = this.LuckyBattleNumber;
+            int pointReceiver = receiver.LuckyBattleNumber;
             int diffPoint = (3 + pointSender - pointReceiver) % 3;
             return this.config.battleConfig.diffAndDamage[diffPoint];
         }
@@ -185,6 +196,13 @@ namespace Assignment.Battle
         {
             bool isFlipX = curCoord.x < toCoord.x;
             this.axieView.flipX = isFlipX;
+        }
+
+        public int GenerateLuckyBattleNumber()
+        {
+            int minRandom = this.config.battleConfig.minRandomGenNumber;
+            int maxRandom = this.config.battleConfig.maxRandomGenNumber;
+            return RandomHelper.GetRandomInt(minRandom, maxRandom);
         }
 
         #endregion

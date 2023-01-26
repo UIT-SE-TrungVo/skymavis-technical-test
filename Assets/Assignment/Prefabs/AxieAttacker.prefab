@@ -143,6 +143,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5421549329912142674}
   - component: {fileID: 2544965873054170331}
+  - component: {fileID: 785508578687126733}
   m_Layer: 0
   m_Name: AxieAttacker
   m_TagString: Untagged
@@ -180,6 +181,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   config: {fileID: 11400000, guid: 4330e34ed75bb124dbf28cf494475c95, type: 2}
   axieSide: 1
+--- !u!65 &785508578687126733
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5421549329912142675}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &2300834228813751941
 PrefabInstance:
   m_ObjectHideFlags: 0

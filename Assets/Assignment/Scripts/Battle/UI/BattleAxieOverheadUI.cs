@@ -60,7 +60,7 @@ namespace Assignment.Battle.UI
             float maxHealth = Math.Max(currentHealth, info.InitHealth);
 
             float targetRatio = currentHealth / maxHealth;
-            float limitLerp = this.sliderLerpSpeed * Time.deltaTime;
+            float limitLerp = this.sliderLerpSpeed * Time.unscaledDeltaTime;
             this.sliderHealth.value = Mathf.Lerp(sliderHealth.value, targetRatio, limitLerp);
 
             Color healthColor = this.GetHealthColor(1.0f, this.sliderHealth.value);
@@ -78,8 +78,8 @@ namespace Assignment.Battle.UI
         private Vector3 GetAddPositionAdjustedByCamera()
         {
             float camSize = this.curCamera.orthographicSize;
-            float addPerSize = 5.0f;
-            float heightAtDefaultCamSize = 48f;
+            float addPerSize = 6.0f;
+            float heightAtDefaultCamSize = 40f;
             return Vector3.up * (heightAtDefaultCamSize + addPerSize * (this.defaultCamSize - camSize));
         }
 

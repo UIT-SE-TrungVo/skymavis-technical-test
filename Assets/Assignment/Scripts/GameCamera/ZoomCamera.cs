@@ -36,7 +36,7 @@ namespace Assignment.GameCamera
             float scrollValue = -Mouse.current.scroll.ReadValue().y;
             if (scrollValue == 0) return;
 
-            float zoomValue = scrollValue * this.zoomSpeed * Time.deltaTime;
+            float zoomValue = scrollValue * this.zoomSpeed * Time.unscaledDeltaTime;
             float newZoom = Mathf.Clamp(this.gameCamera.orthographicSize + zoomValue, this.minSize, this.maxSize);
             this.gameCamera.orthographicSize = newZoom;
         }
