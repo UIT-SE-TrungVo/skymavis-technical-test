@@ -15,6 +15,7 @@ namespace Assignment.Battle.UI
         [SerializeField] private Text textNumber;
         [SerializeField] private Text textDamage;
         [SerializeField] private RectTransform panel;
+        [SerializeField] private Image imgIconTarget;
 
         private BattleAxie selectedAxie;
         private bool isAxieNull = true;
@@ -43,7 +44,7 @@ namespace Assignment.Battle.UI
 
         private void Update()
         {
-            if (Mouse.current.leftButton.IsPressed())
+            if (Mouse.current.leftButton.wasPressedThisFrame)
             {
                 RaycastHit hit;
                 Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
@@ -51,11 +52,24 @@ namespace Assignment.Battle.UI
                 if (!Physics.Raycast(ray, out hit, 100.0f)) return;
                 if (hit.transform == null) return;
 
-                this.selectedAxie = hit.transform.GetComponent<BattleAxie>();
+                BattleAxie axie = hit.transform.GetComponent<BattleAxie>();
+                if (axie != null && axie == this.selectedAxie)
+                {
+                    this.selectedAxie = null;
+                    this.HidePanel();
+                }
+                else
+                {
+                    this.selectedAxie = axie;
+                }
+
                 this.isAxieNull = (this.selectedAxie == null);
 
                 this.DoAnimShowPanel();
+                this.DoAnimShowTargetIcon();
             }
+
+            this.SnapTargetIconOnAxie();
         }
 
         private void LateUpdate()
@@ -96,6 +110,29 @@ namespace Assignment.Battle.UI
         private void HidePanel()
         {
             this.panel.position = this.vetPanelHidePos;
+        }
+
+        private void DoAnimShowTargetIcon()
+        {
+            this.imgIconTarget.transform.localScale = Vector3.zero;
+            this.imgIconTarget.transform.DOScale(Vector3.one, 0.3f)
+                .SetEase(Ease.OutBack);
+        }
+
+        private void SnapTargetIconOnAxie()
+        {
+            if (this.isAxieNull)
+            {
+                this.imgIconTarget.transform.localScale = Vector3.zero;
+            }
+            else
+            {
+                const float offsetYToCenterOnAxie = 20.0f;
+                Vector3 targetPosition = Camera.main.WorldToScreenPoint(this.selectedAxie.transform.position);
+                targetPosition.y += offsetYToCenterOnAxie;
+                targetPosition.z = 0;
+                this.imgIconTarget.transform.position = targetPosition;
+            }
         }
 
         #endregion

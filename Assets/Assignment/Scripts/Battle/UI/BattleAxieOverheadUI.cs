@@ -13,6 +13,7 @@ namespace Assignment.Battle.UI
         private BattleAxie owner;
         [SerializeField] private Slider sliderHealth;
         [SerializeField] private float sliderLerpSpeed;
+        [SerializeField] private float healthBarOpacity;
 
         private float defaultCamSize;
         private bool canUpdate;
@@ -97,7 +98,7 @@ namespace Assignment.Battle.UI
 
             float hue = minHue + (maxHue - minHue) * (currentValue / maxValue);
             Color color = Color.HSVToRGB(hue, 1.0f, 0.8f);
-            color.a = 0.80f;
+            color.a = this.healthBarOpacity;
             return color;
         }
 

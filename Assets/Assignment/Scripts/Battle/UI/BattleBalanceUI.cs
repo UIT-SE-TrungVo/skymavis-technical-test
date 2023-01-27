@@ -13,9 +13,6 @@ namespace Assignment.Battle.UI
         [SerializeField] private BattleField battleField;
         [SerializeField] private Slider sliderBalance;
 
-        public float attackerTotalHealth;
-        public float defenderTotalHealth;
-
         #endregion
 
         #region PROPERTIES
@@ -39,9 +36,6 @@ namespace Assignment.Battle.UI
 
             float rate = totalHealthAttacker / (totalHealthDefender + totalHealthAttacker);
             this.sliderBalance.value = rate;
-
-            attackerTotalHealth = totalHealthAttacker;
-            defenderTotalHealth = totalHealthDefender;
         }
 
         #endregion

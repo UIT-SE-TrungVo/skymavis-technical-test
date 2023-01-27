@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sliderHealth: {fileID: 3089427063013997199}
   sliderLerpSpeed: 2
+  healthBarOpacity: 0.8
 --- !u!1 &1428367166195718468
 GameObject:
   m_ObjectHideFlags: 0

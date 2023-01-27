@@ -667,7 +667,7 @@ PrefabInstance:
     - target: {fileID: 2417607125642466742, guid: 8d32d48564c6360418919b4c2f7c18c0,
         type: 3}
       propertyPath: m_Name
-      value: PanelBattleBalance
+      value: Panel Battle Balance
       objectReference: {fileID: 0}
     - target: {fileID: 2446997771636238020, guid: 8d32d48564c6360418919b4c2f7c18c0,
         type: 3}
