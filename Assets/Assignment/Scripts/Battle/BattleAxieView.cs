@@ -8,6 +8,7 @@ using Newtonsoft.Json.Linq;
 using Spine;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 namespace Assignment.Battle
 {
@@ -28,11 +29,11 @@ namespace Assignment.Battle
 
         private readonly List<string> animHurt = new List<string>()
         {
-            "defense/hit-by-normal"
-            , "defense/hit-by-ranged-attack"
+            "defense/hit-by-normal", "defense/hit-by-ranged-attack"
         };
 
-        private new Camera camera;
+        private Camera gameCamera;
+        private Outline outline;
         private bool isLookAtCamera = false;
 
         #endregion
@@ -45,8 +46,8 @@ namespace Assignment.Battle
 
         private void Start()
         {
-            this.camera = Camera.main;
-            this.isLookAtCamera = camera != null;
+            this.gameCamera = Camera.main;
+            this.isLookAtCamera = gameCamera != null;
         }
 
         private void Update()
@@ -61,7 +62,7 @@ namespace Assignment.Battle
         private void LookTowardCamera()
         {
             if (!this.isLookAtCamera) return;
-            this.transform.rotation = Quaternion.Euler(this.camera.transform.eulerAngles.x, 0, 0);
+            this.transform.rotation = Quaternion.Euler(this.gameCamera.transform.eulerAngles.x, 0, 0);
         }
 
         public void ApplyViewConfig(AxieConfigInfo info)
@@ -97,6 +98,7 @@ namespace Assignment.Battle
         {
             base.SetGenes(axieId, genreStr);
             this.DoAnimAppear();
+            this.outline = this.SkeletonAnimation.gameObject.AddComponent<Outline>();
         }
 
         public void DoAnimAppear()

@@ -79,7 +79,7 @@ namespace Assignment.Battle.UI
         {
             float camSize = this.curCamera.orthographicSize;
             float addPerSize = 6.0f;
-            float heightAtDefaultCamSize = 24.0f;
+            float heightAtDefaultCamSize = 26.0f;
             return Vector3.up * (heightAtDefaultCamSize + addPerSize * (this.defaultCamSize - camSize));
         }
 
@@ -96,7 +96,9 @@ namespace Assignment.Battle.UI
             const float minHue = 0.0f;
 
             float hue = minHue + (maxHue - minHue) * (currentValue / maxValue);
-            return Color.HSVToRGB(hue, 1.0f, 0.8f);
+            Color color = Color.HSVToRGB(hue, 1.0f, 0.8f);
+            color.a = 0.80f;
+            return color;
         }
 
         #endregion
