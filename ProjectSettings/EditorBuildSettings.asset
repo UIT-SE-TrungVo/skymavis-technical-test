@@ -5,15 +5,21 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Plugins/AxieInfinity/AxieMixerUnity/Demo/0. Loading Screen/Loading.unity
     guid: e9ede3c3dfc7148409d176224d6293ba
-  - enabled: 1
+  - enabled: 0
     path: Assets/Plugins/AxieInfinity/AxieMixerUnity/Demo/1. Basic/DemoMixer.unity
     guid: 2cda990e2423bbf4892e6590ba056729
-  - enabled: 1
+  - enabled: 0
     path: Assets/Plugins/AxieInfinity/AxieMixerUnity/Demo/2. Flappy Axie/FlappyAxie.unity
     guid: 3e62be8942ba54570a24aa9cc83af773
+  - enabled: 1
+    path: Assets/Assignment/Scenes/WelcomeScene.unity
+    guid: 7980c729cc5d39d489870b64ac6e0b1c
+  - enabled: 1
+    path: Assets/Assignment/Scenes/BattleScene.unity
+    guid: 8d5026f5841c8034fa9f1fbae76f9d38
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: a2726c744cb2ee6418d2af1c9466bdb8,
       type: 2}

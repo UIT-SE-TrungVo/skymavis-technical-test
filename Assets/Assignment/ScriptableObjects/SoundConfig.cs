@@ -14,5 +14,6 @@ namespace Assignment.ScriptableObjects
     public struct SfxConfigInfo
     {
         public List<AudioClip> hitSfx;
+        public List<AudioClip> moveSfx;
     }
 }

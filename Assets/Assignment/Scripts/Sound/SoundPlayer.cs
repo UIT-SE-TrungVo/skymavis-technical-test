@@ -48,7 +48,10 @@ namespace Assignment.Sound
                 switch (soundCategory)
                 {
                     case SoundCategory.Hit:
-                        this.PlayHitSound();
+                        this.PlayRandomSoundInList(this.config.sfx.hitSfx);
+                        break;
+                    case SoundCategory.Move:
+                        this.PlayRandomSoundInList(this.config.sfx.moveSfx);
                         break;
                     default:
                         break;
@@ -75,11 +78,10 @@ namespace Assignment.Sound
             nextPlaySounds.Add(soundCategory);
         }
 
-        private void PlayHitSound()
+        private void PlayRandomSoundInList(List<AudioClip> listSound)
         {
-            List<AudioClip> listHitSound = this.config.sfx.hitSfx;
-            if (listHitSound.Count <= 0) return;
-            AudioClip hitSound = RandomHelper.GetRandomElementFromList(listHitSound);
+            if (listSound.Count <= 0) return;
+            AudioClip hitSound = RandomHelper.GetRandomElementFromList(listSound);
             this.audioSource.PlayOneShot(hitSound);
         }
 

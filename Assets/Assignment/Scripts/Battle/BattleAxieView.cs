@@ -115,6 +115,7 @@ namespace Assignment.Battle
             string anim = RandomHelper.GetRandomElementFromList(this.animAttack);
             this.SkeletonAnimation.timeScale = 1f;
             this.SkeletonAnimation.AnimationState.SetAnimation(0, anim, false);
+            this.SkeletonAnimation.AnimationState.AddAnimation(0, "action/idle/normal", true, 0);
         }
 
         public void DoAnimDamaged()
@@ -134,6 +135,7 @@ namespace Assignment.Battle
         {
             this.SkeletonAnimation.timeScale = 1f;
             this.SkeletonAnimation.AnimationState.SetAnimation(0, "defense/hit-by-normal-crit", true);
+            this.SkeletonAnimation.AnimationState.AddAnimation(0, "action/idle/normal", true, 0);
         }
 
         public void DoAnimIdle()

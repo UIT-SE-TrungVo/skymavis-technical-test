@@ -16,3 +16,6 @@ MonoBehaviour:
     hitSfx:
     - {fileID: 8300000, guid: 17a44b5a5905f4b4682ca4690004f9f2, type: 3}
     - {fileID: 8300000, guid: d4be73e3c2d5e3e48a054ae511a2258b, type: 3}
+    moveSfx:
+    - {fileID: 8300000, guid: 9e2f88f999cddaf4ba3ea3524fd59823, type: 3}
+    - {fileID: 8300000, guid: 55240db8e2262b8498b44402b79950c3, type: 3}

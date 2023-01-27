@@ -1,7 +1,9 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Assignment.Battle.GuideMap;
 using Assignment.Battle.Model;
+using Assignment.Battle.UI;
 using Assignment.ScriptableObjects;
 using UnityEngine;
 using Vector2 = UnityEngine.Vector2;
@@ -18,6 +20,7 @@ namespace Assignment.Battle
         [SerializeField] private GameObject prefabAttackAxie;
         [SerializeField] private GameObject prefabDefendAxie;
         [SerializeField] private GameObject nodeGroupAxie;
+        [SerializeField] private BattleResultUI uiResult;
 
         private BattleFieldPositionMgr positionMgr;
         private BattleFieldGuideMgr guideMgr;
@@ -25,6 +28,7 @@ namespace Assignment.Battle
         private BattleFieldActionMgr actionMgr;
 
         private Vector2 gridSize;
+        private bool flagCheckWinCondition = false;
 
         #endregion
 
@@ -54,6 +58,8 @@ namespace Assignment.Battle
             this.guideMgr = new BattleFieldGuideMgr(this.positionMgr);
             this.turnMgr = new BattleFieldTurnMgr(this.battleFieldConfig.secondPerTurn);
             this.actionMgr = new BattleFieldActionMgr(this.positionMgr);
+
+            this.uiResult.HidePanel();
         }
 
         private void FixedUpdate()
@@ -63,6 +69,23 @@ namespace Assignment.Battle
             {
                 this.ExecuteATurn();
             }
+        }
+
+        private void LateUpdate()
+        {
+            if (!this.flagCheckWinCondition) return;
+            this.flagCheckWinCondition = true;
+
+            BattleAxieSide? surviveSide = null;
+            bool isOnlyOneSideSurvive = this.positionMgr.Coord2Axie.Values.ToList().TrueForAll(axie =>
+            {
+                if (surviveSide.HasValue) return axie.AxieSide == surviveSide.Value;
+                surviveSide = axie.AxieSide;
+                return true;
+            });
+
+            if (!isOnlyOneSideSurvive) return;
+            this.uiResult.ShowPanel(surviveSide);
         }
 
         #endregion
@@ -143,6 +166,11 @@ namespace Assignment.Battle
         public List<BattleAxie> GetAllAxies()
         {
             return this.positionMgr.Coord2Axie.Values.ToList();
+        }
+
+        public void OnAxieDie()
+        {
+            this.flagCheckWinCondition = true;
         }
 
         #endregion

@@ -79,8 +79,8 @@ namespace Assignment.Battle.UI
         private Vector3 GetAddPositionAdjustedByCamera()
         {
             float camSize = this.curCamera.orthographicSize;
-            float addPerSize = 6.0f;
-            float heightAtDefaultCamSize = 26.0f;
+            float addPerSize = 5.0f;
+            float heightAtDefaultCamSize = 40.0f;
             return Vector3.up * (heightAtDefaultCamSize + addPerSize * (this.defaultCamSize - camSize));
         }
 

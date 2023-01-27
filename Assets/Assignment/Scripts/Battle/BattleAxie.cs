@@ -85,7 +85,9 @@ namespace Assignment.Battle
             {
                 this.BattleField.RemoveAxie(this);
                 this.axieView.DoAnimDie();
-                Destroy(this.gameObject, 5.0f);
+
+                Destroy(this.gameObject, 3.0f);
+                this.battleField.OnAxieDie();
             }
         }
 
@@ -199,10 +201,12 @@ namespace Assignment.Battle
             this.transform.DOMove(posWorld, 0.5f).SetEase(Ease.OutBack);
 
             this.axieView.DoAnimMove();
+            SoundPlayer.AssignPlaySound(SoundCategory.Move);
         }
 
         public void FaceDirection(Vector2Int curCoord, Vector2Int toCoord)
         {
+            if (curCoord.x == toCoord.x) return;
             bool isFlipX = curCoord.x < toCoord.x;
             this.axieView.flipX = isFlipX;
         }
