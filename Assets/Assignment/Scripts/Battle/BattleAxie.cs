@@ -204,14 +204,14 @@ namespace Assignment.Battle
             SoundPlayer.AssignPlaySound(SoundCategory.Move);
         }
 
-        public void FaceDirection(Vector2Int curCoord, Vector2Int toCoord)
+        private void FaceDirection(Vector2Int curCoord, Vector2Int toCoord)
         {
             if (curCoord.x == toCoord.x) return;
             bool isFlipX = curCoord.x < toCoord.x;
             this.axieView.flipX = isFlipX;
         }
 
-        public int GenerateLuckyBattleNumber()
+        private int GenerateLuckyBattleNumber()
         {
             int minRandom = this.config.battleConfig.minRandomGenNumber;
             int maxRandom = this.config.battleConfig.maxRandomGenNumber;

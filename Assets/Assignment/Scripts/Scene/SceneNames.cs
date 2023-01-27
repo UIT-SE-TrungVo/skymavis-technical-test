@@ -1,8 +1,8 @@
 namespace Assignment.Scene
 {
-    public class SceneNames
+    public static class SceneNames
     {
-        public static string welcomeScene = "WelcomeScene";
-        public static string battleScene = "BattleScene";
+        public static readonly string welcomeScene = "WelcomeScene";
+        public static readonly string battleScene = "BattleScene";
     }
 }

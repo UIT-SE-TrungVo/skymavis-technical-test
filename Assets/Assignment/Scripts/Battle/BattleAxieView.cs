@@ -129,6 +129,7 @@ namespace Assignment.Battle
         {
             this.SkeletonAnimation.timeScale = 1f;
             this.SkeletonAnimation.AnimationState.SetAnimation(0, "action/move-forward", false);
+            this.SkeletonAnimation.AnimationState.AddAnimation(0, "action/idle/normal", true, 0);
         }
 
         public void DoAnimDie()
