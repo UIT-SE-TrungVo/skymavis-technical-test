@@ -57,8 +57,9 @@ namespace Assignment.GameCamera
 
             Vector3 vetMoveCamera = new Vector3(xMoveCamera, 0, yMoveCamera).normalized;
             vetMoveCamera *= (Time.unscaledDeltaTime * this.panSpeed);
+            vetMoveCamera = Quaternion.Euler(-this.transform.rotation.eulerAngles.x, 0, 0) * vetMoveCamera;
 
-            this.gameCamera.transform.Translate(vetMoveCamera, Space.World);
+            this.transform.Translate(vetMoveCamera, Space.Self);
         }
 
         private float CalcCameraMove(float mousePos, float sideLength)

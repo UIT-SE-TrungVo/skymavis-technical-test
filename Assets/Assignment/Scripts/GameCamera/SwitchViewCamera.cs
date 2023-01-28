@@ -13,7 +13,7 @@ namespace Assignment.GameCamera
         [SerializeField] private float timeChangeCameraView;
         [SerializeField] private int initViewIndex;
         [SerializeField] private List<CameraViewInfo> listViewInfo;
-        [SerializeField] private Camera gameCamera;
+        private Camera gameCamera;
 
         private int currentViewIndex;
 
@@ -24,6 +24,11 @@ namespace Assignment.GameCamera
         #endregion
 
         #region UNITY EVENTS
+
+        private void Awake()
+        {
+            this.gameCamera = this.GetComponent<Camera>();
+        }
 
         private void Start()
         {
@@ -67,7 +72,8 @@ namespace Assignment.GameCamera
                 this.gameCamera.DOKill();
                 this.gameCamera.transform.DOMove(info.position, this.timeChangeCameraView)
                     .SetEase(Ease.InOutSine);
-                this.gameCamera.transform.DORotateQuaternion(Quaternion.Euler(info.rotation), this.timeChangeCameraView);
+                this.gameCamera.transform.DORotateQuaternion(Quaternion.Euler(info.rotation),
+                    this.timeChangeCameraView);
             }
         }
 

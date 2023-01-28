@@ -1,11 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using Assignment.ScriptableObjects;
 using DG.Tweening;
 using Game;
 using Newtonsoft.Json.Linq;
-using Spine;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
@@ -62,7 +60,8 @@ namespace Assignment.Battle
         private void LookTowardCamera()
         {
             if (!this.isLookAtCamera) return;
-            this.transform.rotation = Quaternion.Euler(this.gameCamera.transform.eulerAngles.x, 0, 0);
+            Vector3 rotCamera = this.gameCamera.transform.eulerAngles;
+            this.transform.rotation = Quaternion.Euler(rotCamera.x, rotCamera.y, 0);
         }
 
         public void ApplyViewConfig(AxieConfigInfo info)

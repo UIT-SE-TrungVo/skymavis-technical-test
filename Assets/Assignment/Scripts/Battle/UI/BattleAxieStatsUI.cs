@@ -34,7 +34,7 @@ namespace Assignment.Battle.UI
         private void Awake()
         {
             this.vetPanelShowPos = panel.transform.position;
-            this.vetPanelHidePos = this.vetPanelShowPos + Vector3.right * this.panel.rect.width;
+            this.vetPanelHidePos = Vector3.right * (Screen.width + this.panel.rect.width * 2);
         }
 
         private void Start()
