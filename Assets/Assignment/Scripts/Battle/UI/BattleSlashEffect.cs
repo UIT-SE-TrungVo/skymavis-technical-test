@@ -48,10 +48,10 @@ namespace Assignment.Battle.UI
 
         #region METHODS
 
-        public void AppearEffect(Vector3 posTarget, int damage, float appearTime, float stayTime, float disappearTime)
+        public void AppearEffect(Vector3 posTarget, string damage, float appearTime, float stayTime, float disappearTime)
         {
             this.targetPos = posTarget;
-            this.txtDamage.text = damage.ToString();
+            this.txtDamage.text = damage;
 
             this.imgSlash.material.color = new Color(0, 0, 0, 0);
             this.imgSlash.material.DOFade(1, appearTime)

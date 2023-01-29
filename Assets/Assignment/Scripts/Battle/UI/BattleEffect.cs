@@ -35,13 +35,13 @@ namespace Assignment.Battle.UI
 
         #region METHODS
 
-        public static void DisplayDamagedEffect(GameObject target, float damage)
+        public static void DisplayDamagedEffect(GameObject target, string damage)
         {
-            if (Instance == null || Camera.current == null || target == null || damage <= 0) return;
+            if (Instance == null || Camera.current == null || target == null) return;
             Instance.PrivateDisplayDamagedEffect(target, damage);
         }
 
-        private void PrivateDisplayDamagedEffect(GameObject target, float damage)
+        private void PrivateDisplayDamagedEffect(GameObject target, string damage)
         {
             if (Camera.main == null) return;
 
@@ -61,7 +61,7 @@ namespace Assignment.Battle.UI
             eff.gameObject.SetActive(true);
             eff.AppearEffect(
                 target.transform.position,
-                Mathf.RoundToInt(damage),
+                damage,
                 0.3f,
                 5.0f,
                 0.3f

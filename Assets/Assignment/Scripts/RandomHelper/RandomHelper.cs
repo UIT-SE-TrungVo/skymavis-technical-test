@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace Assignment
 {
@@ -21,6 +22,12 @@ namespace Assignment
         public static float GetRandomFloat(float min, float max)
         {
             return (float)(Random.NextDouble() * (max - min) + min);
+        }
+
+        public static bool CanPerformPossibility(float possibility)
+        {
+            float randomRoll = GetRandomFloat(0, 100);
+            return randomRoll < possibility;
         }
     }
 }

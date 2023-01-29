@@ -1,4 +1,5 @@
 using System;
+using Assignment.Battle.BattleItem;
 using Assignment.Battle.Model;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -11,7 +12,9 @@ namespace Assignment.Battle.UI
         #region FIELDS
 
         private BattleAxie owner;
+        [SerializeField] private RectTransform nodeRoot;
         [SerializeField] private Slider sliderHealth;
+        [SerializeField] private Image imageItem;
         [SerializeField] private float sliderLerpSpeed;
         [SerializeField] private float healthBarOpacity;
 
@@ -48,6 +51,7 @@ namespace Assignment.Battle.UI
             if (!this.canUpdate || this.owner == null) return;
             this.UpdateHealthBar();
             this.KeepOnOwnerHead();
+            this.UpdateItem();
         }
 
         #endregion
@@ -72,8 +76,8 @@ namespace Assignment.Battle.UI
         {
             Vector3 axiePosition = owner.transform.position;
             Vector3 position = this.curCamera.WorldToScreenPoint(axiePosition);
-            this.rectSliderHealth.position = position + this.GetAddPositionAdjustedByCamera();
-            this.rectSliderHealth.localScale = Vector3.one * this.GetScaleAdjustedByCamera();
+            this.nodeRoot.position = position + this.GetAddPositionAdjustedByCamera();
+            this.nodeRoot.localScale = Vector3.one * this.GetScaleAdjustedByCamera();
         }
 
         private Vector3 GetAddPositionAdjustedByCamera()
@@ -100,6 +104,20 @@ namespace Assignment.Battle.UI
             Color color = Color.HSVToRGB(hue, 1.0f, 0.8f);
             color.a = this.healthBarOpacity;
             return color;
+        }
+
+        private void UpdateItem()
+        {
+            if (this.owner.Item == null)
+            {
+                this.imageItem.transform.localScale = Vector3.zero;
+                return;
+            }
+
+            this.imageItem.transform.localScale = Vector3.one;
+
+            Sprite spriteItem = BattleItemInfo.GetSpriteByItemName(this.owner.Item.ItemName);
+            this.imageItem.sprite = spriteItem;
         }
 
         #endregion

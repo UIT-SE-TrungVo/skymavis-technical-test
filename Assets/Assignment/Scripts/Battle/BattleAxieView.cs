@@ -135,6 +135,12 @@ namespace Assignment.Battle
         {
             this.SkeletonAnimation.timeScale = 1f;
             this.SkeletonAnimation.AnimationState.SetAnimation(0, "defense/hit-by-normal-crit", true);
+        }
+        
+        public void DoAnimDodge()
+        {
+            this.SkeletonAnimation.timeScale = 1f;
+            this.SkeletonAnimation.AnimationState.SetAnimation(0, "defense/evade", false);
             this.SkeletonAnimation.AnimationState.AddAnimation(0, "action/idle/normal", true, 0);
         }
 

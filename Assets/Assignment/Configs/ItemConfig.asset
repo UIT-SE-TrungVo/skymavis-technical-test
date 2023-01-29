@@ -1,0 +1,180 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d6484ee409e4d5bb4de459b8383f109, type: 3}
+  m_Name: ItemConfig
+  m_EditorClassIdentifier: 
+  criticalDamagePercent: 20
+  itemA:
+    configName: 1
+    name: Long Sword
+    stats:
+      itemClass: 0
+      damage: 1
+      health: 0
+      critRate: 0
+      dodgeChance: 0
+  itemB:
+    configName: 2
+    name: Red Stone
+    stats:
+      itemClass: 0
+      damage: 0
+      health: 10
+      critRate: 0
+      dodgeChance: 0
+  itemC:
+    configName: 3
+    name: Critical Book
+    stats:
+      itemClass: 0
+      damage: 0
+      health: 0
+      critRate: 10
+      dodgeChance: 0
+  itemD:
+    configName: 4
+    name: Normal Boots
+    stats:
+      itemClass: 0
+      damage: 0
+      health: 0
+      critRate: 0
+      dodgeChance: 100
+  itemAA:
+    configName: 11
+    name: Dark Machete
+    stats:
+      itemClass: 1
+      damage: 2.5
+      health: 0
+      critRate: 0
+      dodgeChance: 0
+    countEmpoweredAttack: 3
+    percentDamage: 10
+  itemAB:
+    configName: 12
+    name: Devine Axe
+    stats:
+      itemClass: 1
+      damage: 1.2
+      health: 12
+      critRate: 0
+      dodgeChance: 0
+    rateConvertHealthToDamage: 5
+  itemAC:
+    configName: 13
+    name: Electric Edge
+    stats:
+      itemClass: 1
+      damage: 1.2
+      health: 0
+      critRate: 12
+      dodgeChance: 0
+    multiplyCritDamage: 2
+  itemAD:
+    configName: 14
+    name: Ruined Sword
+    stats:
+      itemClass: 1
+      damage: 1.2
+      health: 0
+      critRate: 0
+      dodgeChance: 12
+    percentLifeSteal: 15
+  itemBB:
+    configName: 21
+    name: Blue Pearl
+    stats:
+      itemClass: 0
+      damage: 0
+      health: 25
+      critRate: 0
+      dodgeChance: 0
+    percentReduceDamage: 25
+  itemBC:
+    configName: 22
+    name: Heavy Shield
+    stats:
+      itemClass: 1
+      damage: 0
+      health: 12
+      critRate: 12
+      dodgeChance: 0
+  itemBD:
+    configName: 23
+    name: Feather Coat
+    stats:
+      itemClass: 1
+      damage: 0
+      health: 12
+      critRate: 0
+      dodgeChance: 12
+    percentHealthRecoverFromDodge: 10
+  itemCC:
+    configName: 33
+    name: Power Gun
+    stats:
+      itemClass: 0
+      damage: 0
+      health: 0
+      critRate: 25
+      dodgeChance: 0
+  itemCD:
+    configName: 34
+    name: Duo Sickles
+    stats:
+      itemClass: 1
+      damage: 0
+      health: 0
+      critRate: 12
+      dodgeChance: 12
+  itemDD:
+    configName: 44
+    name: Air Boots
+    stats:
+      itemClass: 1
+      damage: 0
+      health: 0
+      critRate: 0
+      dodgeChance: 25
+    dodgeGainEachTime: 2
+    maxDodge: 40
+  defaultItemImage: {fileID: 0}
+  listItemImage:
+  - configName: 1
+    image: {fileID: 21300000, guid: 0ac6cf2fd53db27489fa2c360aa6c78b, type: 3}
+  - configName: 2
+    image: {fileID: 21300000, guid: e7c9e427f84807748a012c2fb5fe66a1, type: 3}
+  - configName: 3
+    image: {fileID: 21300000, guid: a488f228d4621aa4aa2848f63113fe56, type: 3}
+  - configName: 4
+    image: {fileID: 21300000, guid: 382ce936127504248ad113faf0608fce, type: 3}
+  - configName: 11
+    image: {fileID: 21300000, guid: c76db9b128a2a614b8e8aed9f848b7ed, type: 3}
+  - configName: 12
+    image: {fileID: 21300000, guid: ad2c939e75e5989468fe7e84c66e4936, type: 3}
+  - configName: 13
+    image: {fileID: 21300000, guid: 6832e62d6d317d246aa7a69568145131, type: 3}
+  - configName: 14
+    image: {fileID: 21300000, guid: 2d5becf016a12a340863f9f865e685fe, type: 3}
+  - configName: 21
+    image: {fileID: 21300000, guid: 2dc98c00e88c2a14cabf65429437a747, type: 3}
+  - configName: 22
+    image: {fileID: 21300000, guid: 1b2b8534c3a8ca34b8e4b1496db27883, type: 3}
+  - configName: 23
+    image: {fileID: 21300000, guid: be894f67bf7d0be42b4c67f4cc0d83a2, type: 3}
+  - configName: 33
+    image: {fileID: 21300000, guid: ea3a4bf2c31abee4185e8056db4ddc48, type: 3}
+  - configName: 34
+    image: {fileID: 21300000, guid: e235f866da810e74399a9132989fcaac, type: 3}
+  - configName: 44
+    image: {fileID: 21300000, guid: ac2fabbda4e966e459251179128d30c6, type: 3}

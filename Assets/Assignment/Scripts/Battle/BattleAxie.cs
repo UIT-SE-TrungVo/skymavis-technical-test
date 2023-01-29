@@ -1,4 +1,6 @@
 using System;
+using Assignment.Battle.BattleItem;
+using Assignment.Battle.BattleItem.Enum;
 using Assignment.Battle.GuideMap;
 using Assignment.Battle.Model;
 using Assignment.Battle.UI;
@@ -8,6 +10,7 @@ using Assignment.Sound.Enum;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.LowLevel;
 
 namespace Assignment.Battle
 {
@@ -26,6 +29,8 @@ namespace Assignment.Battle
         private BattleAxieView axieView;
         private BattleField battleField;
         private BattleAxie target;
+
+        private BattleItem.BattleItem item;
 
         #endregion
 
@@ -65,6 +70,12 @@ namespace Assignment.Battle
             private set => latestDamage = value;
         }
 
+        public BattleItem.BattleItem Item
+        {
+            get => item;
+            private set => item = value;
+        }
+
         #endregion
 
         #region UNITY EVENTS
@@ -77,6 +88,7 @@ namespace Assignment.Battle
             this.CurrentHealth = this.Stats.InitHealth;
 
             this.LuckyBattleNumber = this.GenerateLuckyBattleNumber();
+            this.Item = BattleItemFactory.GetRandomItemName(this);
         }
 
         private void LateUpdate()
@@ -169,7 +181,7 @@ namespace Assignment.Battle
             SoundPlayer.AssignPlaySound(SoundCategory.Hit);
             float damage = this.CalculateDamageBetweenAxies(this.Target);
             this.LatestDamage = damage;
-            return () => this.Target.GetDamage(damage);
+            return () => this.Target.GetDamage(this, damage);
         }
 
         private float CalculateDamageBetweenAxies(BattleAxie receiver)
@@ -180,13 +192,33 @@ namespace Assignment.Battle
             return this.config.battleConfig.diffAndDamage[diffPoint];
         }
 
-        public void GetDamage(float value)
+        public void GetDamage(BattleAxie attacker, float value)
         {
-            Debug.LogFormat("Axie damaged {0} {1} {2}", this.GetInstanceID(), value, this.CurrentHealth);
-            this.CurrentHealth -= value;
-            this.axieView.DoAnimDamaged();
+            DamageInfo damageInfo = new DamageInfo(value, attacker, this);
+            damageInfo.ConductDamageFactors();
+            if (damageInfo.IsDodged)
+            {
+                Debug.LogFormat("Axie dodged {0} {1}", this.GetInstanceID(), this.axieSide);
+                attacker.Item?.OnDodgedAttack();
+                this.Item?.OnDodgedAttack();
+                this.axieView.DoAnimDodge();
 
-            BattleEffect.DisplayDamagedEffect(this.gameObject, value);
+                BattleEffect.DisplayDamagedEffect(this.gameObject, "missed");
+            }
+            else
+            {
+                float totalDamage = damageInfo.GetFinalDamage();
+                Debug.LogFormat("Axie damaged {0} {1} {2}({3})", this.GetInstanceID(), this.axieSide, totalDamage,
+                    this.currentHealth);
+
+                this.CurrentHealth -= value;
+                this.axieView.DoAnimDamaged();
+
+                attacker.Item?.OnSuccessfulAttack(damageInfo, totalDamage);
+                this.Item?.OnSuccessfulAttack(damageInfo, totalDamage);
+
+                BattleEffect.DisplayDamagedEffect(this.gameObject, Mathf.RoundToInt(totalDamage).ToString());
+            }
         }
 
         public void GetMovement(Vector2Int toCoord)
@@ -216,6 +248,13 @@ namespace Assignment.Battle
             int minRandom = this.config.battleConfig.minRandomGenNumber;
             int maxRandom = this.config.battleConfig.maxRandomGenNumber;
             return RandomHelper.GetRandomInt(minRandom, maxRandom);
+        }
+
+        public bool TrySetBattleItem(BattleItem.BattleItem setItem)
+        {
+            if (this.Item != null) return false;
+            this.Item = setItem;
+            return true;
         }
 
         #endregion
