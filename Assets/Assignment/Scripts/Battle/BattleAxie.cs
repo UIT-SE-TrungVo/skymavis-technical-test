@@ -88,6 +88,10 @@ namespace Assignment.Battle
             this.CurrentHealth = this.Stats.InitHealth;
 
             this.LuckyBattleNumber = this.GenerateLuckyBattleNumber();
+        }
+
+        private void Start()
+        {
             this.Item = BattleItemFactory.GetRandomItemName(this);
         }
 
