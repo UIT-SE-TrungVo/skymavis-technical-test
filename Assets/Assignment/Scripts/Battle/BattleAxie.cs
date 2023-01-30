@@ -92,7 +92,8 @@ namespace Assignment.Battle
 
         private void Start()
         {
-            this.Item = BattleItemFactory.GetRandomItemName(this);
+            BattleItem.BattleItem item = BattleItemFactory.GetRandomItemName(this);
+            this.TrySetBattleItem(item);
         }
 
         private void LateUpdate()
@@ -258,11 +259,11 @@ namespace Assignment.Battle
         {
             if (this.Item != null) return false;
             this.Item = setItem;
-            
+
             //convert the value of current health by percent
             float currentHealthPercent = this.CurrentHealth / this.stats.InitHealth;
             this.CurrentHealth = (this.stats.InitHealth + this.Item.BasicStats.health) * 1 / currentHealthPercent;
-            
+
             this.Item.OnEquip();
             return true;
         }
