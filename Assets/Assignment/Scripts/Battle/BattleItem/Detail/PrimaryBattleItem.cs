@@ -11,6 +11,7 @@ namespace Assignment.Battle.BattleItem.Detail
 
         public override void OnEquip()
         {
+            
         }
 
         public override void OnAttack(DamageInfo damageInfo)

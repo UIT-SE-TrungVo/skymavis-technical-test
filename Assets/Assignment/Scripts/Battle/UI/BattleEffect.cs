@@ -9,8 +9,8 @@ namespace Assignment.Battle.UI
 
         private static BattleEffect instance;
 
-        [SerializeField] private GameObject prefabSlashEffect;
-        private Queue<BattleSlashEffect> queueIdleSlashEffect = new Queue<BattleSlashEffect>();
+        [SerializeField] private List<BattleSlashEffect> listSlashEffect;
+        private int nextSlashEffectIdx = 0;
 
         #endregion
 
@@ -45,20 +45,7 @@ namespace Assignment.Battle.UI
         {
             if (Camera.main == null) return;
 
-            BattleSlashEffect eff;
-            if (this.queueIdleSlashEffect.Count <= 0)
-            {
-                eff = Instantiate(prefabSlashEffect, this.transform)
-                    .GetComponent<BattleSlashEffect>();
-            }
-            else
-            {
-                eff = this.queueIdleSlashEffect.Dequeue();
-            }
-
-            if (eff == null) return;
-            eff.Mgr = this;
-            eff.gameObject.SetActive(true);
+            BattleSlashEffect eff = this.listSlashEffect[this.nextSlashEffectIdx];
             eff.AppearEffect(
                 target.transform.position,
                 damage,
@@ -66,12 +53,8 @@ namespace Assignment.Battle.UI
                 5.0f,
                 0.3f
             );
-        }
-
-        public void RetrieveAttackEffect(BattleSlashEffect effect)
-        {
-            this.queueIdleSlashEffect.Enqueue(effect);
-            effect.gameObject.SetActive(false);
+            
+            this.nextSlashEffectIdx = (this.nextSlashEffectIdx + 1) % this.listSlashEffect.Count;
         }
 
         #endregion

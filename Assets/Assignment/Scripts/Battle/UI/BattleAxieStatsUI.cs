@@ -86,12 +86,13 @@ namespace Assignment.Battle.UI
         {
             BattleAxieInfo info = axie.Stats;
             float currentHealth = axie.CurrentHealth;
+            float addHealth = axie.Item?.BasicStats.health ?? 0;
             int battleNumber = axie.LuckyBattleNumber;
             float latestDamage = axie.LatestDamage;
 
             this.textHealth.text = "Health: @current@ / @max@"
                 .Replace("@current@", Mathf.RoundToInt(currentHealth).ToString())
-                .Replace("@max@", Mathf.RoundToInt(info.InitHealth).ToString());
+                .Replace("@max@", Mathf.RoundToInt(info.InitHealth + addHealth).ToString());
 
             this.textNumber.text = "Battle Number: @number@"
                 .Replace("@number@", battleNumber.ToString());
